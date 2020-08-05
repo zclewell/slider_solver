@@ -53,27 +53,3 @@ class Solver:
         self.iterations = iterations
         self.best_d = best_d
         return best
-
-
-
-
-def point_sum(point, sliders, dims=None):
-    if not dims:
-        dims = len(point)
-
-    v = 1
-    for i in range(dims):
-        v *= sliders[i][point[i]]
-
-    return v
-
-if __name__ == '__main__':
-    sliders = [range(1,10), range(1,5), range(1,3)]
-    _eval = lambda p: point_sum(p, sliders, len(sliders))
-
-    solver = Solver(sliders, _eval)
-
-    target = 33
-    best = solver.solve(target)
-
-    print('Target: {} Actual: {} Indices: {} Distance: {} Iterations: {}'.format(target, _eval(best), best, solver.best_d, solver.iterations))
