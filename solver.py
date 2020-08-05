@@ -15,34 +15,43 @@ def point_sum(point, sliders, dims=None):
 if __name__ == '__main__':
     target = 33
 
-    sliders = [range(10), range(5), range(3)]
+    sliders = [range(1,10), range(1,5), range(1,3)]
 
     dims = len(sliders) # dimension
-    lims = [s[-1] for s in sliders] # limits
+    lims = [len(s) for s in sliders] # limits
 
     q = queue.Queue()
-    q.put([0 for i in range(dims)])
+    first = tuple([0 for i in range(dims)])
+    q.put(first)
+    seen = set(first)
 
     best = best_d = None
+    iterations = 0
 
     while not q.empty():
         curr = q.get()
+        iterations += 1
 
         if not best:
             best, best_d = curr, abs(target - point_sum(curr, sliders, dims))
         else:
-            curr_d = target - point_sum(curr, sliders, dims)
-            if curr_d < 0:
-                continue # we passed the target
+            val = point_sum(curr, sliders, dims)
+            curr_d = abs(target - val)
             if curr_d < best_d:
-                best, best_d = curr, curr_d
+                best, best_d = curr, abs(curr_d)
+            if val > target:
+                continue # we passed the target
 
         if best_d == 0:
             break
 
         for i in range(dims):
-            new = curr
-            new[i] = min(new[i] + 1, lims[i])
-            q.put(new)
+            new = list(curr)
+            new[i] = min(new[i] + 1, lims[i] - 1)
+            new = tuple(new)
+            if new not in seen:
+                seen.add(new)
+                q.put(new)
 
-    print(best)
+    print('Required {} iterations'.format(iterations))
+    print(best, point_sum(best, sliders, dims))
