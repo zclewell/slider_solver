@@ -6,8 +6,6 @@ matrix:
     branches:
       only:
         - master
-    before_install:
-      - cd backend
     install:
       - pip install -r requirements.txt
       - pip install codecov pytest-cov
