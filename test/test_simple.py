@@ -12,6 +12,18 @@ def test_simple_solver_min(simple_solver):
     assert target == _eval(actual)
     assert actual == point
 
+def test_simple_solver_max(simple_solver):
+    sliders = simple_solver.sliders
+    _eval = simple_solver._eval
+
+    dims = len(sliders)
+    point = tuple([len(sliders[i]) - 1 for i in range(dims)])
+    target = _eval(point)
+
+    actual = simple_solver.solve(target)
+    assert target == _eval(actual)
+    assert actual == point
+
 def test_simple_solver_start_pos(simple_solver):
     sliders = simple_solver.sliders
     _eval = simple_solver._eval
@@ -50,5 +62,4 @@ def test_simple_solver_start_end_pos(simple_solver):
 
     actual = simple_solver.solve(target, start_pos=start_pos, end_pos=end_pos)
     assert target == _eval(actual)
-    assert actual == point
-    
+    assert actual == point    
