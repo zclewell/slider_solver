@@ -7,14 +7,20 @@ class Solver:
         self.sliders = sliders
         self._eval = _eval
 
-    def solve(self, target):
+
+    def solve(self, target, start_pos=None, end_pos=None):
         dims = len(self.sliders) # dimensions
-        lims = [len(s) for s in sliders] # limits
+        lims = [len(s) - 1 for s in self.sliders] # limits
+
+        if start_pos == None:
+            start_pos = tuple([0 for i in range(dims)])
+
+        if end_pos == None:
+            end_pos = lims
 
         q = queue.Queue()
-        first = tuple([0 for i in range(dims)])
-        q.put(first)
-        seen = set(first)
+        q.put(start_pos)
+        seen = set(start_pos)
 
         best = best_d = None
         iterations = 0
@@ -23,7 +29,7 @@ class Solver:
             curr = q.get()
             iterations += 1
 
-            val = _eval(curr)
+            val = self._eval(curr)
             dist = abs(target - val)
             if not best:
                 best, best_d = curr, dist
@@ -38,7 +44,7 @@ class Solver:
 
             for i in range(dims):
                 new = list(curr)
-                new[i] = min(new[i] + 1, lims[i] - 1)
+                new[i] = min(new[i] + 1, lims[i], end_pos[i])
                 new = tuple(new)
                 if new not in seen:
                     seen.add(new)
