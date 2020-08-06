@@ -8,15 +8,11 @@ class Solver:
         self._eval = _eval
 
 
-    def solve(self, target, start_pos=None, end_pos=None):
+    def solve(self, target):
         dims = len(self.sliders) # dimensions
         lims = [len(s) - 1 for s in self.sliders] # limits
 
-        if start_pos == None:
-            start_pos = tuple([0 for i in range(dims)])
-
-        if end_pos == None:
-            end_pos = lims
+        start_pos = tuple([0 for i in range(dims)])
 
         q = queue.Queue()
         q.put(start_pos)
@@ -44,7 +40,7 @@ class Solver:
 
             for i in range(dims):
                 new = list(curr)
-                new[i] = min(new[i] + 1, lims[i], end_pos[i])
+                new[i] = min(new[i] + 1, lims[i])
                 new = tuple(new)
                 if new not in seen:
                     seen.add(new)
