@@ -34,5 +34,4 @@ def test_simple_solver_inexact(simple_solver):
     target = best - 1
 
     actual = simple_solver.solve(target)
-    assert best == _eval(point)
     assert actual == point    
