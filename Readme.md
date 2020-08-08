@@ -12,6 +12,13 @@ You supply one or more series of discrete values (computer volume settings and t
 ## Limitations
 Currently we assume that an increase in value in any slider also increases the output of the supplied evaluation function. This allows us to use a breadth first search to find a target value faster.
 
+## Testing
+We use `pytest` in order to validate our functions simply run:
+```bash
+pytest-3
+```
+In the root directory to test on your machine.
+
 ## Objects
 ### Solver
 Assumes supplied sliders are sorted
