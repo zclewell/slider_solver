@@ -1,5 +1,6 @@
 import pytest
 import copy
+from src import solver
 
 def test_simple_solver_min(simple_solver):
     sliders = simple_solver.sliders
@@ -77,3 +78,17 @@ def test_simple_solver_start_pos_midpoint(simple_solver):
     assert actual2 == point
 
     assert simple_solver2.iterations < simple_solver.iterations
+
+def test_unsorted_simple_solver_min():
+    sliders =[sorted(range(1,10), reverse=True) for i in range(2)]
+    _eval = lambda x, sliders=sliders: sliders[0][int(x[0])] * sliders[1][int(x[1])]
+
+    unsorted_simple_solver = solver.UnSortedSolver(sliders, _eval)
+
+    dims = len(sliders)
+    point = tuple([0 for i in range(dims)])
+    target = _eval(point)
+
+    actual = unsorted_simple_solver.solve(target)
+    assert target == _eval(actual)
+    assert actual == point

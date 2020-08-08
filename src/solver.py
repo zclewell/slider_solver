@@ -71,8 +71,17 @@ class Solver:
                             seen.add(new)
                             q.put(new)
                     
-                    
-        
         self.iterations = iterations
         self.best_d = best_d
         return best
+
+
+class UnSortedSolver(Solver):
+    def __init__(self, sliders, _eval):
+        sliders = [sorted([[s[i], i] for i in range(len(s))], key=lambda x: x[0]) for s in sliders]
+        _eval = lambda x, sliders=sliders, _eval=_eval: _eval(tuple([sliders[i][x[i]][1] for i in range(len(x))]))
+        Solver.__init__(self, sliders, _eval)
+
+    def solve(self, target, start_pos=None, end_pos=None):
+        return tuple(self.sliders[i][v][1] for i, v in enumerate(Solver.solve(self, target, start_pos=start_pos, end_pos=end_pos)))
+        
